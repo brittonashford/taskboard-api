@@ -17,20 +17,26 @@ namespace taskboard_api.Services.IssueService
                 Title = "Test2"
             }
         };
-        public List<Issue> AddIssue(Issue newIssue)
+        public async Task<ServiceResponse<List<Issue>>> AddIssue(Issue newIssue)
         {
+            var serviceResponse = new ServiceResponse<List<Issue>>();
             issues.Add(newIssue);
-            return issues;
+            serviceResponse.Data = issues;  
+            return serviceResponse;
         }
 
-        public List<Issue> GetAllIssues()
+        public async Task<ServiceResponse<List<Issue>>> GetAllIssues()
         {
-            return issues;
+            var serviceResponse = new ServiceResponse<List<Issue>>();
+            serviceResponse.Data = issues;  
+            return serviceResponse;
         }
 
-        public Issue GetIssueById(int id)
+        public async Task<ServiceResponse<Issue>> GetIssueById(int id)
         {
-            return issues.FirstOrDefault(i => i.IssueId == id);
+            var serviceResponse = new ServiceResponse<Issue>();
+            serviceResponse.Data = issues.FirstOrDefault(i => i.IssueId == id);
+            return serviceResponse;
         }
     }
 }

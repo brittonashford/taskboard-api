@@ -17,21 +17,21 @@ namespace taskboard_api.Controllers
         }
 
         [HttpGet("GetAllIssues")]
-        public ActionResult<List<Issue>> GetAllIssues()
+        public async Task<ActionResult<ServiceResponse<List<Issue>>>> GetAllIssues()
         {
-            return Ok(_characterService.GetAllIssues());
+            return Ok(await _characterService.GetAllIssues());
         }
 
         [HttpGet("GetIssueById/{id}")]
-        public ActionResult<Issue> GetIssueById(int id)
+        public async Task<ActionResult<ServiceResponse<Issue>>> GetIssueById(int id)
         {
-            return Ok(_characterService.GetIssueById(id));
+            return Ok(await _characterService.GetIssueById(id));
         }
 
         [HttpPost("CreateIssue")]
-        public ActionResult<List<Issue>> AddIssue(Issue newIssue)
+        public async Task<ActionResult<ServiceResponse<List<Issue>>>> AddIssue(Issue newIssue)
         {
-            return Ok(_characterService.AddIssue(newIssue));
+            return Ok(await _characterService.AddIssue(newIssue));
         }
 
     }
