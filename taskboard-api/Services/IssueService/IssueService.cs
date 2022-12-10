@@ -1,4 +1,6 @@
-﻿using taskboard_api.Models;
+﻿using AutoMapper;
+using taskboard_api.DTOs.Issue;
+using taskboard_api.Models;
 
 namespace taskboard_api.Services.IssueService
 {
@@ -17,25 +19,35 @@ namespace taskboard_api.Services.IssueService
                 Title = "Test2"
             }
         };
-        public async Task<ServiceResponse<List<Issue>>> AddIssue(Issue newIssue)
+        private readonly IMapper _mapper;
+
+        public IssueService(IMapper mapper)
         {
-            var serviceResponse = new ServiceResponse<List<Issue>>();
-            issues.Add(newIssue);
-            serviceResponse.Data = issues;  
+            _mapper = mapper;
+        }
+        public async Task<ServiceResponse<List<GetIssueDTO>>> AddIssue(AddIssueDTO newIssue)
+        {
+            var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
+            Issue issue = _mapper.Map<Issue>(newIssue);
+            issue.IssueId = issues.Max(c => c.IssueId) + 1;
+            issues.Add(issue);
+            serviceResponse.Data = issues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();  
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<Issue>>> GetAllIssues()
+        public async Task<ServiceResponse<List<GetIssueDTO>>> GetAllIssues()
         {
-            var serviceResponse = new ServiceResponse<List<Issue>>();
-            serviceResponse.Data = issues;  
-            return serviceResponse;
+            return new ServiceResponse<List<GetIssueDTO>>
+            {
+                Data = issues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList()
+            };
         }
 
-        public async Task<ServiceResponse<Issue>> GetIssueById(int id)
+        public async Task<ServiceResponse<GetIssueDTO>> GetIssueById(int id)
         {
-            var serviceResponse = new ServiceResponse<Issue>();
-            serviceResponse.Data = issues.FirstOrDefault(i => i.IssueId == id);
+            var serviceResponse = new ServiceResponse<GetIssueDTO>();
+            var issue = issues.FirstOrDefault(i => i.IssueId == id);
+            serviceResponse.Data = _mapper.Map<GetIssueDTO>(issue);
             return serviceResponse;
         }
     }

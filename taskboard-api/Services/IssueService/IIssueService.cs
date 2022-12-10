@@ -1,9 +1,11 @@
-﻿namespace taskboard_api.Services.IssueService
+﻿using taskboard_api.DTOs.Issue;
+
+namespace taskboard_api.Services.IssueService
 {
     public interface IIssueService
     {
-        Task<ServiceResponse<List<Issue>>> GetAllIssues();
-        Task<ServiceResponse<Issue>> GetIssueById(int id);
-        Task<ServiceResponse<List<Issue>>> AddIssue(Issue issue);
+        Task<ServiceResponse<List<GetIssueDTO>>> GetAllIssues();
+        Task<ServiceResponse<GetIssueDTO>> GetIssueById(int id);
+        Task<ServiceResponse<List<GetIssueDTO>>> AddIssue(AddIssueDTO issue);
     }
 }
