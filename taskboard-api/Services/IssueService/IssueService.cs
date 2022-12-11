@@ -35,6 +35,25 @@ namespace taskboard_api.Services.IssueService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetIssueDTO>>> DeleteIssue(int issueId)
+        {
+            var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
+
+            try
+            {
+                Issue issue = issues.First(i => i.IssueId == issueId);
+                issues.Remove(issue);
+                serviceResponse.Data = issues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<GetIssueDTO>>> GetAllIssues()
         {
             return new ServiceResponse<List<GetIssueDTO>>
@@ -48,6 +67,26 @@ namespace taskboard_api.Services.IssueService
             var serviceResponse = new ServiceResponse<GetIssueDTO>();
             var issue = issues.FirstOrDefault(i => i.IssueId == id);
             serviceResponse.Data = _mapper.Map<GetIssueDTO>(issue);
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetIssueDTO>> UpdateIssue(UpdateIssueDTO updatedIssue)
+        {
+            var serviceResponse = new ServiceResponse<GetIssueDTO>();
+
+            try
+            {
+                Issue issue = issues.FirstOrDefault(i => i.IssueId == updatedIssue.IssueId);
+
+                _mapper.Map(updatedIssue, issue);
+                serviceResponse.Data = _mapper.Map<GetIssueDTO>(issue);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
             return serviceResponse;
         }
     }
