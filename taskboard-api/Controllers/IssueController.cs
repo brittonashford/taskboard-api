@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using taskboard_api.Data;
 using taskboard_api.DTOs.Issue;
 using taskboard_api.Models;
 using taskboard_api.Services.IssueService;
