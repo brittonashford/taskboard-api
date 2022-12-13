@@ -10,5 +10,6 @@
         //public Sprint? SprintAssignment { get; set; }
         //public Developer? DeveloperAssignment { get; set; }
         public string Description { get; set; } = string.Empty;
+        public User? User { get; set; }
     }
 }
