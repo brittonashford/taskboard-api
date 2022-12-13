@@ -11,9 +11,29 @@ namespace taskboard_api.Data
         {
             _context = context;
         }
-        public Task<ServiceResponse<string>> Login(string username, string password)
+        public async Task<ServiceResponse<string>> Login(string username, string password)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<string>();
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Incorrect username or password.";
+            }
+            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Unable to verify user with provided credentials.";
+            }
+            else
+            {
+                serviceResponse.Data = user.Id.ToString();
+            }
+
+            return serviceResponse;
+
         }
 
         public async Task<ServiceResponse<int>> Register(User user, string password)
@@ -56,6 +76,15 @@ namespace taskboard_api.Data
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computeHash.SequenceEqual(passwordHash);
             }
         }
     }

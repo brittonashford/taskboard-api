@@ -16,7 +16,7 @@ namespace taskboard_api.Controllers
             _authRepo = authRepo;
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegistrationDTO request)
         {
             var response = await _authRepo.Register(
@@ -30,5 +30,19 @@ namespace taskboard_api.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<ServiceResponse<string>>> Login(string username, string password)
+        {
+            var response = await _authRepo.Login(username, password);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
     }
 }
