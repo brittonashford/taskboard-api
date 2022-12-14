@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using taskboard_api.Data;
 using taskboard_api.DTOs.Issue;
 using taskboard_api.Models;
@@ -7,6 +9,7 @@ using taskboard_api.Services.IssueService;
 
 namespace taskboard_api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class IssueController : ControllerBase
@@ -18,10 +21,19 @@ namespace taskboard_api.Controllers
             _issueService = characterService;
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAllIssues")]
         public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> GetAllIssues()
         {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             return Ok(await _issueService.GetAllIssues());
+        }
+
+        [HttpGet("GetUserIssues")]
+        public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> GetUserIssues()
+        {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            return Ok(await _issueService.GetUserIssues(userId));
         }
 
         [HttpGet("GetIssueById/{id}")]

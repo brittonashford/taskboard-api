@@ -82,3 +82,7 @@ C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\ne
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.pdb
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.genruntimeconfig.cache
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\ref\taskboard-api.dll
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Scrutor.dll
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

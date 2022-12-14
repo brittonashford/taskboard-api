@@ -48,13 +48,24 @@ namespace taskboard_api.Services.IssueService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetIssueDTO>>> GetUserIssues(int userId)
+        {
+            var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
+            var dbIssues = await _context.Issues
+                .Where(c => c.User.Id == userId)
+                .ToListAsync();
+            serviceResponse.Data = dbIssues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();
+            return serviceResponse;
+            
+        }
+
         public async Task<ServiceResponse<List<GetIssueDTO>>> GetAllIssues()
         {
             var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
             var dbIssues = await _context.Issues.ToListAsync();
             serviceResponse.Data = dbIssues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();
             return serviceResponse;
-            
+
         }
 
         public async Task<ServiceResponse<GetIssueDTO>> GetIssueById(int id)
