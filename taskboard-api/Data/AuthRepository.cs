@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using taskboard_api.DTOs.Issue;
+using taskboard_api.DTOs.User;
 
 namespace taskboard_api.Data
 {
@@ -10,11 +13,13 @@ namespace taskboard_api.Data
     {
         private readonly DataContext _context;
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
 
-        public AuthRepository(DataContext context, IConfiguration config)
+        public AuthRepository(DataContext context, IConfiguration config, IMapper mapper)
         {
             _context = context;
             _config = config;
+            _mapper = mapper;
         }
         public async Task<ServiceResponse<string>> Login(string username, string password)
         {
@@ -117,6 +122,22 @@ namespace taskboard_api.Data
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<ServiceResponse<User>> GetUser(int userID)
+        {
+            var serviceResponse = new ServiceResponse<User>();
+            var user = await _context.Users.FindAsync(userID);
+
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"User not found. UserId: {userID}.";
+                return serviceResponse;
+            }
+
+            serviceResponse.Data = user;
+            return serviceResponse;
         }
     }
 }

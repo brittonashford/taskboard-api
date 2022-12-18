@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System.Reflection.PortableExecutable;
 using taskboard_api.DTOs.Issue;
+using taskboard_api.DTOs.User;
 
 namespace taskboard_api
 {

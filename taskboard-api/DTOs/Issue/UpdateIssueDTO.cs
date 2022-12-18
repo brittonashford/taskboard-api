@@ -8,7 +8,7 @@
         public IssuePriority Priority { get; set; } = IssuePriority.None;
         public IssueStatus Status { get; set; } = IssueStatus.NotStarted;
         //public Sprint? SprintAssignment { get; set; }
-        //public Developer? DeveloperAssignment { get; set; }
+        public int? AssignedToId { get; set; }
         public string Description { get; set; } = string.Empty;
     }
 }

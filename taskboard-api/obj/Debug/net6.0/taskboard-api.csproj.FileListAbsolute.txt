@@ -1,3 +1,10 @@
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.csproj.AssemblyReference.cache
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.AssemblyInfoInputs.cache
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.AssemblyInfo.cs
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.csproj.CoreCompileInputs.cache
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\appsettings.json
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\taskboard-api.exe
@@ -10,6 +17,7 @@ C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\ne
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Azure.Core.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Azure.Identity.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Humanizer.dll
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
@@ -39,6 +47,9 @@ C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\ne
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Microsoft.SqlServer.Server.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Mono.TextTemplating.dll
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Scrutor.dll
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -66,13 +77,6 @@ C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\ne
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.csproj.AssemblyReference.cache
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.AssemblyInfoInputs.cache
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.AssemblyInfo.cs
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.csproj.CoreCompileInputs.cache
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\staticwebassets.development.json
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\scopedcss\bundle\taskboard-api.styles.css
@@ -82,7 +86,3 @@ C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\ne
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.pdb
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\taskboard-api.genruntimeconfig.cache
 C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\obj\Debug\net6.0\ref\taskboard-api.dll
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Scrutor.dll
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
-C:\Users\britt\Desktop\local-repos\.NET\taskboard-api\taskboard-api\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

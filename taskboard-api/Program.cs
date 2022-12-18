@@ -4,12 +4,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System.Text.Json.Serialization;
 using taskboard_api.Data;
 using taskboard_api.Services.IssueService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();

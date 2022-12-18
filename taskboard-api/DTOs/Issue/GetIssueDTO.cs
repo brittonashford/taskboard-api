@@ -7,8 +7,8 @@
         public IssueType Type { get; set; } = IssueType.UserStory;
         public IssuePriority Priority { get; set; } = IssuePriority.None;
         public IssueStatus Status { get; set; } = IssueStatus.NotStarted;
-        //public Sprint? SprintAssignment { get; set; }
-        //public Developer? DeveloperAssignment { get; set; }
         public string Description { get; set; } = string.Empty;
+        public Models.User? SubmittedBy { get; set; }
+        public Models.User? AssignedTo { get; set; }
     }
 }

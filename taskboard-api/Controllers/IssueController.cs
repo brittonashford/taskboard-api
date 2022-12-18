@@ -29,11 +29,18 @@ namespace taskboard_api.Controllers
             return Ok(await _issueService.GetAllIssues());
         }
 
-        [HttpGet("GetUserIssues")]
-        public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> GetUserIssues()
+        [HttpGet("GetIssuesSubmitted")]
+        public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> GetIssuesSubmitted()
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            return Ok(await _issueService.GetUserIssues(userId));
+            return Ok(await _issueService.GetIssuesSubmitted(userId));
+        }
+
+        [HttpGet("GetAssignedIssues")]
+        public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> GetAssignedIssues()
+        {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            return Ok(await _issueService.GetAssignedIssues(userId));
         }
 
         [HttpGet("GetIssueById/{id}")]
@@ -45,7 +52,8 @@ namespace taskboard_api.Controllers
         [HttpPost("CreateIssue")]
         public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> AddIssue(AddIssueDTO newIssue)
         {
-            return Ok(await _issueService.AddIssue(newIssue));
+            int submittedBy = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            return Ok(await _issueService.AddIssue(newIssue, submittedBy));
         }
 
         [HttpPut("UpdateIssue")]
