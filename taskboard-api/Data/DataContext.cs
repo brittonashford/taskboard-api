@@ -11,6 +11,7 @@ namespace taskboard_api.Data
 
         public DbSet<Issue> Issues { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

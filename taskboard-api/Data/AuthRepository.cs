@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using taskboard_api.DTOs.Issue;
 using taskboard_api.DTOs.User;
+using taskboard_api.DTOs.UserRole;
 
 namespace taskboard_api.Data
 {
@@ -46,15 +47,16 @@ namespace taskboard_api.Data
 
         }
 
-        public async Task<ServiceResponse<int>> Register(User user, string password)
+        public async Task<ServiceResponse<int>> Register(User user, string password, string requestedRole)
         {
-            var serviceResponse = new ServiceResponse<int>();
+            var regResponse = new ServiceResponse<int>();
+            var roleResponse = new ServiceResponse<UserRole>();
 
             if(await UserExists(user.Username))
             {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "User already exists.";
-                return serviceResponse;
+                regResponse.Success = false;
+                regResponse.Message = "User already exists.";
+                return regResponse;
             }
 
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -62,12 +64,25 @@ namespace taskboard_api.Data
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
+            roleResponse = await FindUserRole(requestedRole);
+            if(roleResponse.Data == null)
+            {
+                roleResponse.Success = false;
+                roleResponse.Message = "Invalid UserRole";
+                regResponse.Success = false;
+                regResponse.Message = "Valid user role required.";
+                return regResponse;
+            }
+
+            UserRole userRole = roleResponse.Data;
+            user.UserRole = userRole;
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            
-            serviceResponse.Data = user.Id;
 
-            return serviceResponse;
+            regResponse.Data = user.Id;
+
+            return regResponse;
         }
 
         public async Task<bool> UserExists(string username)
@@ -137,6 +152,58 @@ namespace taskboard_api.Data
             }
 
             serviceResponse.Data = user;
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetUserRoleDTO>> GetUserRole(int userID)
+        {
+            var serviceResponse = new ServiceResponse<GetUserRoleDTO>();
+            var user = await _context.Users.FindAsync(userID);
+
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"User not found. UserId: {userID}.";
+                return serviceResponse;
+            }
+
+            var userRole = _mapper.Map<GetUserRoleDTO>(user.UserRole);
+            serviceResponse.Data = userRole;
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetUserRoleDTO>>> GetAllUserRoles()
+        {
+            var serviceResponse = new ServiceResponse<List<GetUserRoleDTO>>();
+
+            try
+            {
+                List<UserRole> userRoles = new List<UserRole>();
+                userRoles = await _context.UserRoles.ToListAsync();
+                serviceResponse.Data = userRoles.Select(r => _mapper.Map<GetUserRoleDTO>(r)).ToList();
+            }
+            catch (Exception ex){
+                serviceResponse.Success = false;
+                serviceResponse.Message = "UserRoles not found";             
+            }
+            
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<UserRole>> FindUserRole(string requestedRole)
+        {
+            var serviceResponse = new ServiceResponse<UserRole>();
+            try
+            {
+                var userRole = await _context.UserRoles.FirstAsync(u => u.RoleType == requestedRole);
+                serviceResponse.Data = _mapper.Map<UserRole>(userRole);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Invalid user role";
+            }
+
             return serviceResponse;
         }
     }

@@ -78,13 +78,35 @@ namespace taskboardapi.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("UserRoleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserRoleId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("taskboard_api.Models.UserRole", b =>
+                {
+                    b.Property<int>("UserRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserRoleId"));
+
+                    b.Property<string>("RoleType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserRoleId");
+
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("taskboard_api.Models.Issue", b =>
@@ -104,9 +126,25 @@ namespace taskboardapi.Migrations
 
             modelBuilder.Entity("taskboard_api.Models.User", b =>
                 {
+                    b.HasOne("taskboard_api.Models.UserRole", "UserRole")
+                        .WithMany("UsersInRole")
+                        .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserRole");
+                });
+
+            modelBuilder.Entity("taskboard_api.Models.User", b =>
+                {
                     b.Navigation("AssignedIssues");
 
                     b.Navigation("IssuesSubmitted");
+                });
+
+            modelBuilder.Entity("taskboard_api.Models.UserRole", b =>
+                {
+                    b.Navigation("UsersInRole");
                 });
 #pragma warning restore 612, 618
         }

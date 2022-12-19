@@ -43,6 +43,13 @@ namespace taskboard_api.Controllers
             return Ok(await _issueService.GetAssignedIssues(userId));
         }
 
+        [AllowAnonymous]
+        [HttpGet("GetUnassignedIssues")]
+        public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> GetUnassignedIssues()
+        {
+            return Ok(await _issueService.GetUnassignedIssues());
+        }
+
         [HttpGet("GetIssueById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetIssueDTO>>> GetIssueById(int id)
         {

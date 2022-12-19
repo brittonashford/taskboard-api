@@ -17,10 +17,14 @@ namespace taskboard_api.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegistrationDTO request)
+        public async Task<ActionResult<ServiceResponse<int>>> Register(string userName, string password, string requestedRole)
         {
             var response = await _authRepo.Register(
-                new Models.User { Username = request.Username }, request.Password
+                new Models.User { 
+                    Username = userName
+                }, 
+                password,
+                requestedRole
             );
 
             if (!response.Success)
@@ -43,6 +47,7 @@ namespace taskboard_api.Controllers
 
             return Ok(response);
         }
+
 
     }
 }

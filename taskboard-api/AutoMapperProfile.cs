@@ -2,6 +2,7 @@
 using System.Reflection.PortableExecutable;
 using taskboard_api.DTOs.Issue;
 using taskboard_api.DTOs.User;
+using taskboard_api.DTOs.UserRole;
 
 namespace taskboard_api
 {
@@ -12,6 +13,7 @@ namespace taskboard_api
             CreateMap<Issue, GetIssueDTO>();
             CreateMap<AddIssueDTO, Issue>();
             CreateMap<UpdateIssueDTO, Issue>();
+            CreateMap<UserRole, GetUserRoleDTO>();
         }
     }
 }

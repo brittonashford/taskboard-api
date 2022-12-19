@@ -94,7 +94,16 @@ namespace taskboard_api.Services.IssueService
                 .ToListAsync();
             serviceResponse.Data = dbIssues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();
             return serviceResponse;
+        }
 
+        public async Task<ServiceResponse<List<GetIssueDTO>>> GetUnassignedIssues()
+        {
+            var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
+            var dbIssues = await _context.Issues
+                .Where(c => c.AssignedTo.Id == null)
+                .ToListAsync();
+            serviceResponse.Data = dbIssues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<GetIssueDTO>>> GetAllIssues()
