@@ -11,7 +11,7 @@ namespace taskboard_api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class IssueController : ControllerBase
     {
         private readonly IIssueService _issueService;
@@ -25,15 +25,13 @@ namespace taskboard_api.Controllers
         [HttpGet("GetAllIssues")]
         public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> GetAllIssues()
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             return Ok(await _issueService.GetAllIssues());
         }
 
         [HttpGet("GetIssuesSubmitted")]
         public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> GetIssuesSubmitted()
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            return Ok(await _issueService.GetIssuesSubmitted(userId));
+            return Ok(await _issueService.GetIssuesSubmitted());
         }
 
         [HttpGet("GetAssignedIssues")]

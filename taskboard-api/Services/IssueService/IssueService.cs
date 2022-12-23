@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using taskboard_api.Data;
 using taskboard_api.DTOs.Issue;
 using taskboard_api.DTOs.User;
@@ -12,13 +13,19 @@ namespace taskboard_api.Services.IssueService
         private readonly IMapper _mapper;
         private readonly DataContext _context;
         private readonly IAuthRepository _authRepo;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IssueService(IMapper mapper, DataContext context, IAuthRepository authRepo)
+        public IssueService(IMapper mapper, DataContext context, IAuthRepository authRepo, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _context = context;
             _authRepo = authRepo;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User
+            .FindFirstValue(ClaimTypes.NameIdentifier)!);
+
         public async Task<ServiceResponse<List<GetIssueDTO>>> AddIssue(AddIssueDTO newIssue, int submittedBy)
         {
             var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
@@ -75,11 +82,11 @@ namespace taskboard_api.Services.IssueService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetIssueDTO>>> GetIssuesSubmitted(int userId)
+        public async Task<ServiceResponse<List<GetIssueDTO>>> GetIssuesSubmitted()
         {
             var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
             var dbIssues = await _context.Issues
-                .Where(c => c.SubmittedBy.Id == userId)
+                .Where(c => c.SubmittedBy.Id == GetUserId())
                 .ToListAsync();
             serviceResponse.Data = dbIssues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();
             return serviceResponse;
