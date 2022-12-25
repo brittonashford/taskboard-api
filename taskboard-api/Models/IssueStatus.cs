@@ -6,6 +6,7 @@ namespace taskboard_api.Models
     public enum IssueStatus
     {
         NotStarted,
+        InformationNeeded,
         Development,
         Testing,
         FailedTesting,

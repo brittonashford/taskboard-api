@@ -1,11 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace taskboardapi.Migrations
 {
     /// <inheritdoc />
-    public partial class redoAll : Migration
+    public partial class Redo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,8 +59,10 @@ namespace taskboardapi.Migrations
                     Priority = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubmittedById = table.Column<int>(type: "int", nullable: true),
-                    AssignedToId = table.Column<int>(type: "int", nullable: true)
+                    SubmittedById = table.Column<int>(type: "int", nullable: false),
+                    AssignedToId = table.Column<int>(type: "int", nullable: true),
+                    LastUpdatedById = table.Column<int>(type: "int", nullable: false),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,7 +76,19 @@ namespace taskboardapi.Migrations
                         name: "FK_Issues_Users_SubmittedById",
                         column: x => x.SubmittedById,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "UserRoleId", "RoleType" },
+                values: new object[,]
+                {
+                    { 1, "Developer" },
+                    { 2, "ProductManager" },
+                    { 3, "BusinessUser" },
+                    { 4, "Admin" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,4 +1,6 @@
-﻿namespace taskboard_api.DTOs.Issue
+﻿using taskboard_api.DTOs.User;
+
+namespace taskboard_api.DTOs.Issue
 {
     public class GetIssueDTO
     {
@@ -8,7 +10,7 @@
         public IssuePriority Priority { get; set; } = IssuePriority.None;
         public IssueStatus Status { get; set; } = IssueStatus.NotStarted;
         public string Description { get; set; } = string.Empty;
-        public Models.User? SubmittedBy { get; set; }
-        public Models.User? AssignedTo { get; set; }
+        public int SubmittedById { get; set; }
+        public int? AssignedToId { get; set; }
     }
 }

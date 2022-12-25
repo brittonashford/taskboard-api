@@ -12,8 +12,8 @@ using taskboard_api.Data;
 namespace taskboardapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221218225522_redoAll")]
-    partial class redoAll
+    [Migration("20221225010353_Redo")]
+    partial class Redo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,13 +40,19 @@ namespace taskboardapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LastUpdatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SubmittedById")
+                    b.Property<int>("SubmittedById")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -110,6 +116,28 @@ namespace taskboardapi.Migrations
                     b.HasKey("UserRoleId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserRoleId = 1,
+                            RoleType = "Developer"
+                        },
+                        new
+                        {
+                            UserRoleId = 2,
+                            RoleType = "ProductManager"
+                        },
+                        new
+                        {
+                            UserRoleId = 3,
+                            RoleType = "BusinessUser"
+                        },
+                        new
+                        {
+                            UserRoleId = 4,
+                            RoleType = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("taskboard_api.Models.Issue", b =>
@@ -120,7 +148,9 @@ namespace taskboardapi.Migrations
 
                     b.HasOne("taskboard_api.Models.User", "SubmittedBy")
                         .WithMany("IssuesSubmitted")
-                        .HasForeignKey("SubmittedById");
+                        .HasForeignKey("SubmittedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AssignedTo");
 
@@ -130,7 +160,7 @@ namespace taskboardapi.Migrations
             modelBuilder.Entity("taskboard_api.Models.User", b =>
                 {
                     b.HasOne("taskboard_api.Models.UserRole", "UserRole")
-                        .WithMany("UsersInRole")
+                        .WithMany()
                         .HasForeignKey("UserRoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -143,11 +173,6 @@ namespace taskboardapi.Migrations
                     b.Navigation("AssignedIssues");
 
                     b.Navigation("IssuesSubmitted");
-                });
-
-            modelBuilder.Entity("taskboard_api.Models.UserRole", b =>
-                {
-                    b.Navigation("UsersInRole");
                 });
 #pragma warning restore 612, 618
         }

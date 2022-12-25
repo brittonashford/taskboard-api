@@ -13,6 +13,7 @@ namespace taskboard_api
             CreateMap<Issue, GetIssueDTO>();
             CreateMap<AddIssueDTO, Issue>();
             CreateMap<UpdateIssueDTO, Issue>();
+            CreateMap<User, GetUserDTO>();
             CreateMap<UserRole, GetUserRoleDTO>();
         }
     }
