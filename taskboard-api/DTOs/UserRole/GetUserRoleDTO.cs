@@ -2,6 +2,6 @@
 {
     public class GetUserRoleDTO
     {
-        public string RoleType { get; set; }
+        public string UserRoleName { get; set; }
     }
 }

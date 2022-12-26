@@ -1,7 +1,7 @@
 ﻿using taskboard_api.DTOs.User;
 using taskboard_api.DTOs.UserRole;
 
-namespace taskboard_api.Data
+namespace taskboard_api.Repositories.Auth
 {
     public interface IAuthRepository
     {

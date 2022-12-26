@@ -2,15 +2,9 @@
 
 namespace taskboard_api.Models
 {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum IssueStatus
+    public class IssueStatus
     {
-        NotStarted,
-        InformationNeeded,
-        Development,
-        Testing,
-        FailedTesting,
-        ReadyToDeploy,
-        Complete
+        public int IssueStatusId { get; set; }
+        public string IssueStatusName { get; set; }
     }
 }

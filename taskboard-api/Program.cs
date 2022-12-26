@@ -6,6 +6,8 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text.Json.Serialization;
 using taskboard_api.Data;
+using taskboard_api.Repositories.Auth;
+using taskboard_api.Repositories.IssueStatus;
 using taskboard_api.Services.IssueService;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -47,6 +49,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IIssueService, IssueService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IIssueStatusRepo, IssueStatusRepo>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

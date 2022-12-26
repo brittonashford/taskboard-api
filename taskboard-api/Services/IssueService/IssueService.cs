@@ -6,6 +6,8 @@ using taskboard_api.DTOs.Issue;
 using taskboard_api.DTOs.User;
 using taskboard_api.DTOs.UserRole;
 using taskboard_api.Models;
+using taskboard_api.Repositories.Auth;
+using taskboard_api.Repositories.IssueStatus;
 
 namespace taskboard_api.Services.IssueService
 {
@@ -14,13 +16,15 @@ namespace taskboard_api.Services.IssueService
         private readonly IMapper _mapper;
         private readonly DataContext _context;
         private readonly IAuthRepository _authRepo;
+        private readonly IIssueStatusRepo _issueStatusRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IssueService(IMapper mapper, DataContext context, IAuthRepository authRepo, IHttpContextAccessor httpContextAccessor)
+        public IssueService(IMapper mapper, DataContext context, IAuthRepository authRepo, IIssueStatusRepo issueStatusRepo, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _context = context;
             _authRepo = authRepo;
+            _issueStatusRepo = issueStatusRepo;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -45,13 +49,12 @@ namespace taskboard_api.Services.IssueService
 
                 if (submittedById > 0)
                 {
-                    issue.SubmittedById = GetCurrentUserId();
+                    issue.SubmittedById = submittedById;
                 }
                 else
                 {
                     throw new Exception("Unable to find UserId for current user");
                 }
-
 
                 if ((newIssue.AssignedToId != null && await IsValidUserId((int)newIssue.AssignedToId)) || newIssue.AssignedToId == null)
                 {
@@ -64,6 +67,13 @@ namespace taskboard_api.Services.IssueService
 
                 issue.LastUpdatedById = GetCurrentUserId();
                 issue.LastUpdatedDate = DateTime.Now;
+
+                //var issueStatus = await _issueStatusRepo.GetIssueStatusById(newIssue.IssueStatusId);
+                //if (issueStatus == null)
+                //{
+                //    throw new Exception($"Issue status not found for IssueStatusId: {newIssue.IssueStatusId}.");
+                //}
+                //issue.Status = issueStatus.Data;
 
                 _context.Issues.Add(issue);
                 await _context.SaveChangesAsync();
@@ -186,10 +196,16 @@ namespace taskboard_api.Services.IssueService
                     throw new Exception($"Issue not found. IssueId: {updatedIssue.IssueId}");
                 }
 
+                var issueStatus = await _issueStatusRepo.GetIssueStatusById(updatedIssue.IssueStatusId);
+                if (issueStatus == null)
+                {
+                    throw new Exception($"Issue status not found for IssueStatusId: {updatedIssue.IssueStatusId}.");
+                }
+                
                 issue.Title = updatedIssue.Title;
                 issue.Type = updatedIssue.Type;
                 issue.Priority = updatedIssue.Priority;
-                issue.Status = updatedIssue.Status;
+                issue.Status = issueStatus.Data;
                 issue.Description = updatedIssue.Description;
                 issue.AssignedToId = updatedIssue.AssignedToId;
                 issue.LastUpdatedById = GetCurrentUserId();

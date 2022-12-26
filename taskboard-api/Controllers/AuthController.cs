@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Mvc;
-using taskboard_api.Data;
 using taskboard_api.DTOs.User;
+using taskboard_api.Repositories.Auth;
 
 namespace taskboard_api.Controllers
 {

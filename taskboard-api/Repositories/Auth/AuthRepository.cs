@@ -4,11 +4,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using taskboard_api.DTOs.Issue;
-using taskboard_api.DTOs.User;
+using taskboard_api.Data;
 using taskboard_api.DTOs.UserRole;
 
-namespace taskboard_api.Data
+namespace taskboard_api.Repositories.Auth
 {
     public class AuthRepository : IAuthRepository
     {
@@ -52,7 +51,7 @@ namespace taskboard_api.Data
             var regResponse = new ServiceResponse<int>();
             var roleResponse = new ServiceResponse<UserRole>();
 
-            if(await UserExists(user.Username))
+            if (await UserExists(user.Username))
             {
                 regResponse.Success = false;
                 regResponse.Message = "User already exists.";
@@ -65,7 +64,7 @@ namespace taskboard_api.Data
             user.PasswordSalt = passwordSalt;
 
             roleResponse = await FindUserRole(requestedRole);
-            if(roleResponse.Data == null)
+            if (roleResponse.Data == null)
             {
                 roleResponse.Success = false;
                 roleResponse.Message = "Invalid UserRole";
@@ -87,7 +86,7 @@ namespace taskboard_api.Data
 
         public async Task<bool> UserExists(string username)
         {
-            if(await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower()))
+            if (await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower()))
             {
                 return true;
             }
@@ -97,7 +96,7 @@ namespace taskboard_api.Data
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            using (var hmac = new HMACSHA512())
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
@@ -106,7 +105,7 @@ namespace taskboard_api.Data
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            using (var hmac = new HMACSHA512(passwordSalt))
             {
                 var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return computeHash.SequenceEqual(passwordHash);
@@ -182,11 +181,12 @@ namespace taskboard_api.Data
                 userRoles = await _context.UserRoles.ToListAsync();
                 serviceResponse.Data = userRoles.Select(r => _mapper.Map<GetUserRoleDTO>(r)).ToList();
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 serviceResponse.Success = false;
-                serviceResponse.Message = "UserRoles not found";             
+                serviceResponse.Message = "UserRoles not found";
             }
-            
+
             return serviceResponse;
         }
 
@@ -195,7 +195,7 @@ namespace taskboard_api.Data
             var serviceResponse = new ServiceResponse<UserRole>();
             try
             {
-                var userRole = await _context.UserRoles.FirstAsync(u => u.RoleType == requestedRole);
+                var userRole = await _context.UserRoles.FirstAsync(u => u.UserRoleName == requestedRole);
                 serviceResponse.Data = _mapper.Map<UserRole>(userRole);
             }
             catch (Exception ex)

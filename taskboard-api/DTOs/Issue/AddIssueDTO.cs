@@ -5,8 +5,7 @@
         public string Title { get; set; } = string.Empty;
         public IssueType Type { get; set; } = IssueType.UserStory;
         public IssuePriority Priority { get; set; } = IssuePriority.None;
-        public IssueStatus Status { get; set; } = IssueStatus.NotStarted;
-        public int? AssignedToId { get; set; }
+        public int? AssignedToId { get; set; } = 0;
         public string Description { get; set; } = string.Empty;
     }
 }
