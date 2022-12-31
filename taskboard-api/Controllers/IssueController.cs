@@ -5,6 +5,7 @@ using System.Security.Claims;
 using taskboard_api.Data;
 using taskboard_api.DTOs.Issue;
 using taskboard_api.Models;
+using taskboard_api.Repositories.Lane;
 using taskboard_api.Services.IssueService;
 
 namespace taskboard_api.Controllers
@@ -15,10 +16,12 @@ namespace taskboard_api.Controllers
     public class IssueController : ControllerBase
     {
         private readonly IIssueService _issueService;
+        private readonly ILaneRepo _laneRepo;
 
-        public IssueController(IIssueService characterService)
+        public IssueController(IIssueService characterService, ILaneRepo laneRepo)
         {
             _issueService = characterService;
+            _laneRepo = laneRepo;
         }
 
         [AllowAnonymous]
@@ -77,6 +80,19 @@ namespace taskboard_api.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> DeleteIssue(int id)
         {
             var serviceResponse = await _issueService.DeleteIssue(id);
+
+            if (serviceResponse.Data == null)
+            {
+                return NotFound(serviceResponse);
+            }
+            return Ok(serviceResponse);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetAllLanes")]
+        public async Task<ActionResult<ServiceResponse<List<Models.Lane>>>> GetAllLanes()
+        {
+            var serviceResponse = await _laneRepo.GetAllLanes();
 
             if (serviceResponse.Data == null)
             {

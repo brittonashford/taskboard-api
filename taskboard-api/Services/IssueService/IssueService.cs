@@ -56,6 +56,8 @@ namespace taskboard_api.Services.IssueService
                     throw new Exception("Unable to find UserId for current user");
                 }
 
+                //TODO: fix bug
+                // if AssignedToId = 0, a FK error will occur. C# ints aren't nullabe, but SQL Server allows it...
                 if ((newIssue.AssignedToId != null && await IsValidUserId((int)newIssue.AssignedToId)) || newIssue.AssignedToId == null)
                 {
                     issue.AssignedToId = newIssue.AssignedToId;
@@ -67,13 +69,6 @@ namespace taskboard_api.Services.IssueService
 
                 issue.LastUpdatedById = GetCurrentUserId();
                 issue.LastUpdatedDate = DateTime.Now;
-
-                //var issueStatus = await _issueStatusRepo.GetIssueStatusById(newIssue.IssueStatusId);
-                //if (issueStatus == null)
-                //{
-                //    throw new Exception($"Issue status not found for IssueStatusId: {newIssue.IssueStatusId}.");
-                //}
-                //issue.Status = issueStatus.Data;
 
                 _context.Issues.Add(issue);
                 await _context.SaveChangesAsync();
@@ -161,8 +156,8 @@ namespace taskboard_api.Services.IssueService
         {
             var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
             var dbIssues = await _context.Issues
-                    //.Include(i => i.SubmittedById)
-                    //    .Include(i => i.AssignedToId)
+                    .Include(i => i.SubmittedBy)
+                    .Include(i => i.AssignedTo)
                     .ToListAsync();
             serviceResponse.Data = dbIssues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();
             return serviceResponse;
