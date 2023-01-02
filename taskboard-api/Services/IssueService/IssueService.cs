@@ -39,26 +39,31 @@ namespace taskboard_api.Services.IssueService
             }
             return false;
         }
-        public async Task<ServiceResponse<List<GetIssueDTO>>> AddIssue(AddIssueDTO newIssue, int submittedBy)
+        public async Task<ServiceResponse<List<GetIssueDTO>>> CreateIssue(CreateIssueDTO newIssue)
         {
             var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
             try
             {
-                var issue = _mapper.Map<Issue>(newIssue);
-                var submittedById = GetCurrentUserId();
+                var issue = new Issue();
 
-                if (submittedById > 0)
-                {
-                    issue.SubmittedById = submittedById;
-                }
-                else
+                if (GetCurrentUserId() == null)
                 {
                     throw new Exception("Unable to find UserId for current user");
                 }
 
+                //TODO: try adding back DTO automapper logic?
+                issue.Title = newIssue.Title;
+                issue.Type = newIssue.Type;
+                issue.Priority = newIssue.Priority;
+                issue.Description = newIssue.Description;
+                issue.SubmittedById = GetCurrentUserId();
+                issue.LastUpdatedById = GetCurrentUserId();
+                issue.LastUpdatedDate = DateTime.Now;
+
+
                 //TODO: fix bug
                 // if AssignedToId = 0, a FK error will occur. C# ints aren't nullabe, but SQL Server allows it...
-                if ((newIssue.AssignedToId != null && await IsValidUserId((int)newIssue.AssignedToId)) || newIssue.AssignedToId == null)
+                if ((newIssue.AssignedToId > 0 && await IsValidUserId((int)newIssue.AssignedToId)) || newIssue.AssignedToId == null)
                 {
                     issue.AssignedToId = newIssue.AssignedToId;
                 }
@@ -67,8 +72,6 @@ namespace taskboard_api.Services.IssueService
                     throw new Exception("Unable to add new issue. Assigned to invalid user.");
                 }
 
-                issue.LastUpdatedById = GetCurrentUserId();
-                issue.LastUpdatedDate = DateTime.Now;
 
                 _context.Issues.Add(issue);
                 await _context.SaveChangesAsync();
@@ -156,8 +159,6 @@ namespace taskboard_api.Services.IssueService
         {
             var serviceResponse = new ServiceResponse<List<GetIssueDTO>>();
             var dbIssues = await _context.Issues
-                    .Include(i => i.SubmittedBy)
-                    .Include(i => i.AssignedTo)
                     .ToListAsync();
             serviceResponse.Data = dbIssues.Select(i => _mapper.Map<GetIssueDTO>(i)).ToList();
             return serviceResponse;
@@ -190,17 +191,11 @@ namespace taskboard_api.Services.IssueService
                 {
                     throw new Exception($"Issue not found. IssueId: {updatedIssue.IssueId}");
                 }
-
-                var issueStatus = await _issueStatusRepo.GetIssueStatusById(updatedIssue.IssueStatusId);
-                if (issueStatus == null)
-                {
-                    throw new Exception($"Issue status not found for IssueStatusId: {updatedIssue.IssueStatusId}.");
-                }
                 
                 issue.Title = updatedIssue.Title;
                 issue.Type = updatedIssue.Type;
                 issue.Priority = updatedIssue.Priority;
-                issue.Status = issueStatus.Data;
+                issue.IssueStatusId = updatedIssue.IssueStatusId;
                 issue.Description = updatedIssue.Description;
                 issue.AssignedToId = updatedIssue.AssignedToId;
                 issue.LastUpdatedById = GetCurrentUserId();

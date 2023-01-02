@@ -11,7 +11,7 @@ namespace taskboard_api
         public AutoMapperProfile()
         {
             CreateMap<Issue, GetIssueDTO>();
-            CreateMap<AddIssueDTO, Issue>();
+            CreateMap<CreateIssueDTO, Issue>();
             CreateMap<UpdateIssueDTO, Issue>();
             CreateMap<User, GetUserDTO>();
             CreateMap<UserRole, GetUserRoleDTO>();

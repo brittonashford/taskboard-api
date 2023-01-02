@@ -58,10 +58,11 @@ namespace taskboard_api.Controllers
         }
 
         [HttpPost("CreateIssue")]
-        public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> AddIssue(AddIssueDTO newIssue)
+        public async Task<ActionResult<ServiceResponse<List<GetIssueDTO>>>> CreateIssue(CreateIssueDTO newIssue)
         {
+            //TODO: delete submittedBy if not needed
             int submittedBy = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            return Ok(await _issueService.AddIssue(newIssue, submittedBy));
+            return Ok(await _issueService.CreateIssue(newIssue));
         }
 
         [HttpPut("UpdateIssue")]

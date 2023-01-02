@@ -15,7 +15,7 @@ namespace taskboard_api.Repositories.Lane
         {
             var serviceResponse = new ServiceResponse<List<Models.Lane>>();
             var lanes = await _context.Lanes
-                .Include(l => l.IssuesInLane)
+                //.Include(l => l.IssuesInLane)
                 .ToListAsync();
 
             if (lanes.Any())

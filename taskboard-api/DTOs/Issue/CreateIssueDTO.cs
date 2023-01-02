@@ -1,6 +1,6 @@
 ﻿namespace taskboard_api.DTOs.Issue
 {
-    public class AddIssueDTO
+    public class CreateIssueDTO
     {
         public string Title { get; set; } = string.Empty;
         public IssueType Type { get; set; } = IssueType.UserStory;

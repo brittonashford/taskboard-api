@@ -20,20 +20,20 @@ namespace taskboard_api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.IssuesSubmitted)
-                .WithOne(i => i.SubmittedBy)
-                .HasForeignKey(i => i.SubmittedById);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(u => u.IssuesSubmitted)
+            //    .WithOne(i => i.SubmittedBy)
+            //    .HasForeignKey(i => i.SubmittedById);
 
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.AssignedIssues)
-                .WithOne(i => i.AssignedTo)
-                .HasForeignKey(i => i.AssignedToId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(u => u.AssignedIssues)
+            //    .WithOne(i => i.AssignedTo)
+            //    .HasForeignKey(i => i.AssignedToId);
 
-            modelBuilder.Entity<Lane>()
-                .HasMany(l => l.IssuesInLane)
-                .WithOne(i => i.CurrentLane)
-                .HasForeignKey(i => i.CurrentLaneId);
+            //modelBuilder.Entity<Lane>()
+            //    .HasMany(l => l.IssuesInLane)
+            //    .WithOne(i => i.CurrentLaneId)
+            //    .HasForeignKey(i => i.CurrentLaneId);
 
             modelBuilder.Entity<UserRole>()
                 .HasData(
@@ -65,7 +65,7 @@ namespace taskboard_api.Data
 
             modelBuilder.Entity<AvailableStatus>()
                 .HasData(
-                    // "Not Started" availabkle to all users in "To Do" lane
+                    // "Not Started" available to all users in "To Do" lane
                     new AvailableStatus 
                     { 
                         AvailableStatusId = 1,

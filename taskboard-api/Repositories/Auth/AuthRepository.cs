@@ -46,10 +46,9 @@ namespace taskboard_api.Repositories.Auth
 
         }
 
-        public async Task<ServiceResponse<int>> Register(User user, string password, string requestedRole)
+        public async Task<ServiceResponse<int>> Register(User user, string password, int requestedRoleId)
         {
             var regResponse = new ServiceResponse<int>();
-            var roleResponse = new ServiceResponse<UserRole>();
 
             if (await UserExists(user.Username))
             {
@@ -63,18 +62,15 @@ namespace taskboard_api.Repositories.Auth
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            roleResponse = await FindUserRole(requestedRole);
-            if (roleResponse.Data == null)
+
+            if (!await RoleExists(requestedRoleId))
             {
-                roleResponse.Success = false;
-                roleResponse.Message = "Invalid UserRole";
                 regResponse.Success = false;
-                regResponse.Message = "Valid user role required.";
+                regResponse.Message = "Invalid UserRole";
                 return regResponse;
             }
 
-            UserRole userRole = roleResponse.Data;
-            user.UserRole = userRole;
+            user.UserRoleId = requestedRoleId;
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -87,6 +83,16 @@ namespace taskboard_api.Repositories.Auth
         public async Task<bool> UserExists(string username)
         {
             if (await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower()))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> RoleExists(int userRoleId)
+        {
+            if (await _context.UserRoles.AnyAsync(ur => ur.UserRoleId == userRoleId))
             {
                 return true;
             }
@@ -154,9 +160,9 @@ namespace taskboard_api.Repositories.Auth
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserRoleDTO>> GetUserRole(int userID)
+        public async Task<ServiceResponse<int>> GetUserRoleId(int userID)
         {
-            var serviceResponse = new ServiceResponse<GetUserRoleDTO>();
+            var serviceResponse = new ServiceResponse<int>();
             var user = await _context.Users.FindAsync(userID);
 
             if (user == null)
@@ -166,8 +172,8 @@ namespace taskboard_api.Repositories.Auth
                 return serviceResponse;
             }
 
-            var userRole = _mapper.Map<GetUserRoleDTO>(user.UserRole);
-            serviceResponse.Data = userRole;
+            serviceResponse.Data = user.UserRoleId;
+
             return serviceResponse;
         }
 
@@ -190,12 +196,12 @@ namespace taskboard_api.Repositories.Auth
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<UserRole>> FindUserRole(string requestedRole)
+        public async Task<ServiceResponse<UserRole>> GetUserRole(int requestedRoleId)
         {
             var serviceResponse = new ServiceResponse<UserRole>();
             try
             {
-                var userRole = await _context.UserRoles.FirstAsync(u => u.UserRoleName == requestedRole);
+                var userRole = await _context.UserRoles.FirstAsync(u => u.UserRoleId == requestedRoleId);
                 serviceResponse.Data = _mapper.Map<UserRole>(userRole);
             }
             catch (Exception ex)

@@ -270,14 +270,6 @@ namespace taskboardapi.Migrations
 
                     b.HasKey("IssueId");
 
-                    b.HasIndex("AssignedToId");
-
-                    b.HasIndex("CurrentLaneId");
-
-                    b.HasIndex("IssueStatusId");
-
-                    b.HasIndex("SubmittedById");
-
                     b.ToTable("Issues");
                 });
 
@@ -404,8 +396,6 @@ namespace taskboardapi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserRoleId");
-
                     b.ToTable("Users");
                 });
 
@@ -446,60 +436,6 @@ namespace taskboardapi.Migrations
                             UserRoleId = 4,
                             UserRoleName = "Admin"
                         });
-                });
-
-            modelBuilder.Entity("taskboard_api.Models.Issue", b =>
-                {
-                    b.HasOne("taskboard_api.Models.User", "AssignedTo")
-                        .WithMany("AssignedIssues")
-                        .HasForeignKey("AssignedToId");
-
-                    b.HasOne("taskboard_api.Models.Lane", "CurrentLane")
-                        .WithMany("IssuesInLane")
-                        .HasForeignKey("CurrentLaneId");
-
-                    b.HasOne("taskboard_api.Models.IssueStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("IssueStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("taskboard_api.Models.User", "SubmittedBy")
-                        .WithMany("IssuesSubmitted")
-                        .HasForeignKey("SubmittedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AssignedTo");
-
-                    b.Navigation("CurrentLane");
-
-                    b.Navigation("Status");
-
-                    b.Navigation("SubmittedBy");
-                });
-
-            modelBuilder.Entity("taskboard_api.Models.User", b =>
-                {
-                    b.HasOne("taskboard_api.Models.UserRole", "UserRole")
-                        .WithMany()
-                        .HasForeignKey("UserRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserRole");
-                });
-
-            modelBuilder.Entity("taskboard_api.Models.Lane", b =>
-                {
-                    b.Navigation("IssuesInLane");
-                });
-
-            modelBuilder.Entity("taskboard_api.Models.User", b =>
-                {
-                    b.Navigation("AssignedIssues");
-
-                    b.Navigation("IssuesSubmitted");
                 });
 #pragma warning restore 612, 618
         }

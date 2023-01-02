@@ -29,6 +29,28 @@ namespace taskboardapi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Issues",
+                columns: table => new
+                {
+                    IssueId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    CurrentLaneId = table.Column<int>(type: "int", nullable: true),
+                    IssueStatusId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubmittedById = table.Column<int>(type: "int", nullable: false),
+                    AssignedToId = table.Column<int>(type: "int", nullable: true),
+                    LastUpdatedById = table.Column<int>(type: "int", nullable: false),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Issues", x => x.IssueId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IssueStatuses",
                 columns: table => new
                 {
@@ -81,56 +103,6 @@ namespace taskboardapi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_UserRoles_UserRoleId",
-                        column: x => x.UserRoleId,
-                        principalTable: "UserRoles",
-                        principalColumn: "UserRoleId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Issues",
-                columns: table => new
-                {
-                    IssueId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Priority = table.Column<int>(type: "int", nullable: false),
-                    CurrentLaneId = table.Column<int>(type: "int", nullable: true),
-                    IssueStatusId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubmittedById = table.Column<int>(type: "int", nullable: false),
-                    AssignedToId = table.Column<int>(type: "int", nullable: true),
-                    LastUpdatedById = table.Column<int>(type: "int", nullable: false),
-                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Issues", x => x.IssueId);
-                    table.ForeignKey(
-                        name: "FK_Issues_IssueStatuses_IssueStatusId",
-                        column: x => x.IssueStatusId,
-                        principalTable: "IssueStatuses",
-                        principalColumn: "IssueStatusId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Issues_Lanes_CurrentLaneId",
-                        column: x => x.CurrentLaneId,
-                        principalTable: "Lanes",
-                        principalColumn: "LaneId");
-                    table.ForeignKey(
-                        name: "FK_Issues_Users_AssignedToId",
-                        column: x => x.AssignedToId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Issues_Users_SubmittedById",
-                        column: x => x.SubmittedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -202,31 +174,6 @@ namespace taskboardapi.Migrations
                     { 3, "Product Manager" },
                     { 4, "Admin" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Issues_AssignedToId",
-                table: "Issues",
-                column: "AssignedToId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Issues_CurrentLaneId",
-                table: "Issues",
-                column: "CurrentLaneId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Issues_IssueStatusId",
-                table: "Issues",
-                column: "IssueStatusId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Issues_SubmittedById",
-                table: "Issues",
-                column: "SubmittedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_UserRoleId",
-                table: "Users",
-                column: "UserRoleId");
         }
 
         /// <inheritdoc />
@@ -245,10 +192,10 @@ namespace taskboardapi.Migrations
                 name: "Lanes");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "UserRoles");
+                name: "Users");
         }
     }
 }

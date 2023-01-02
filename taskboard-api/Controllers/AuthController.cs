@@ -17,14 +17,14 @@ namespace taskboard_api.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult<ServiceResponse<int>>> Register(string userName, string password, string requestedRole)
+        public async Task<ActionResult<ServiceResponse<int>>> Register(string userName, string password, int requestedRoleId)
         {
             var response = await _authRepo.Register(
                 new Models.User { 
                     Username = userName
                 }, 
                 password,
-                requestedRole
+                requestedRoleId
             );
 
             if (!response.Success)
